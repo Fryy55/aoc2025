@@ -1,0 +1,6 @@
+# vscode bwaaa
+*.code-workspace
+
+# local stuff
+build/
+.cache/
