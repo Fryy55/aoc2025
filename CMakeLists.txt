@@ -3,6 +3,7 @@ project(AoC2025 VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
 
 find_program(SCCACHE_EXEC sccache)
 if (SCCACHE_EXEC)
@@ -18,7 +19,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    src/
+    src/utils
 )
 
 include("cmake/CPM.cmake")
