@@ -88,11 +88,11 @@ std::optional<T> numFromStr(std::string_view str) noexcept {
 	auto ymmLower = _mm256_set1_epi8(47); // '0' - 1u
 	auto ymmUpper = _mm256_set1_epi8(58); // '9' + 1u
 	if (_mm256_movemask_epi8(
-		_mm256_andnot_si256(
+		_mm256_and_si256(
 			_mm256_cmpgt_epi8(ymmStr, ymmLower),
 			_mm256_cmpgt_epi8(ymmUpper, ymmStr)
 		)
-	)) return std::nullopt; // if everything fits this would be 0
+	) != -1) return std::nullopt;
 
 	_mm256_store_si256(
 		reinterpret_cast<__m256i*>(bufPtr),
