@@ -14,7 +14,7 @@ int main() {
 
 	std::string in;
 	while (I >> in) {
-		bool right = in.starts_with('R');
+		bool left = in.starts_with('L');
 		auto numOpt = utils::numFromStr<std::uint64_t>(std::string_view(in).substr(1u));
 		if (!numOpt.has_value()) {
 			log::error("Failed parsing the string '{}'", in);
@@ -22,20 +22,26 @@ int main() {
 		}
 		auto num = numOpt.value();
 
-		if (right) {
-			if (auto diff = 100u - dial; diff <= num) // if an overflow occurs
-				dial = (num - diff) % 100u;
-			else
-				dial += num;
-		} else { // left
-			if (dial < num) // if an overflow occurs
-				dial = (100u - (num - dial) % 100u) % 100u;
-			else
-				dial -= num;
+		if (left) {
+			dial = 100u - dial;
 		}
 
-		if (dial == 0u)
-			++ans;
+		// right move
+		if (auto diff = 100u - dial; diff <= num) { // if an overflow occurs
+			dial = (num - diff) % 100u;
+			ans += (num - diff) / 100u + 1u;
+
+			if (left && diff == 0u) // :p
+				--ans;
+		} else {
+			dial += num;
+
+			if (dial == 0u)
+				++ans;
+		}
+
+		if (left)
+			dial = (100u - dial) % 100u;
 	}
 
 	I.close();
